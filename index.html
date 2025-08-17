@@ -1,146 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKNB9ZJFBE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DKNB9ZJFBE');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-cloud-sun"></i> Weather App</h1>
-        </header>
-
-        <div class="search-section">
-            <div class="api-key-section" id="apiKeySection">
-                <div class="api-key-container">
-                    <input type="password" id="apiKeyInput" placeholder="Enter your WeatherAPI.com API key...">
-                    <button id="saveApiKeyBtn"><i class="fas fa-save"></i> Save Key</button>
-                    <button id="toggleApiKeyBtn" type="button"><i class="fas fa-eye"></i></button>
-                </div>
-                <p class="api-key-help">
-                    <i class="fas fa-info-circle"></i>
-                    Get your free API key from <a href="https://www.weatherapi.com/pricing.aspx" target="_blank">WeatherAPI.com</a> (1M calls/month free!)
-                </p>
-            </div>
-
-            <div class="search-container">
-                <input type="text" id="locationInput" placeholder="Enter city name...">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
-                <button id="locationBtn" title="Use current location"><i class="fas fa-location-dot"></i></button>
-            </div>
-        </div>
-
-        <div class="loading" id="loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Loading weather data...</p>
-        </div>
-
-        <div class="weather-card" id="weatherCard">
-            <div class="weather-header">
-                <h2 id="cityName">City Name</h2>
-                <p id="date"></p>
-            </div>
-
-            <div class="weather-main">
-                <div class="temperature-section">
-                    <div class="temperature">
-                        <span id="temperature">--</span>
-                        <span class="unit">°C</span>
+        <!-- API Key Setup Section -->
+        <div id="api-setup" class="api-setup">
+            <div class="api-card">
+                <h2>🔑 Setup Weather API</h2>
+                <p>Get your free API key from <a href="https://www.weatherapi.com/pricing.aspx" target="_blank">WeatherAPI.com</a></p>
+                
+                <div class="api-input-group">
+                    <div class="input-container">
+                        <input 
+                            type="password" 
+                            id="api-key-input" 
+                            placeholder="Enter your API key"
+                            class="api-input"
+                        >
+                        <button type="button" id="toggle-api-visibility" class="toggle-btn">👁️</button>
                     </div>
-                    <div class="weather-description">
-                        <i id="weatherIcon" class="fas fa-sun"></i>
-                        <p id="description">Clear Sky</p>
-                    </div>
+                    <button id="save-api-key" class="save-btn">Save Key</button>
                 </div>
-            </div>
-
-            <div class="weather-details">
-                <div class="detail-item">
-                    <i class="fas fa-eye"></i>
-                    <div>
-                        <span class="label">Visibility</span>
-                        <span id="visibility" class="value">-- km</span>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-tint"></i>
-                    <div>
-                        <span class="label">Humidity</span>
-                        <span id="humidity" class="value">--%</span>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-wind"></i>
-                    <div>
-                        <span class="label">Wind Speed</span>
-                        <span id="windSpeed" class="value">-- km/h</span>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-thermometer-half"></i>
-                    <div>
-                        <span class="label">Feels Like</span>
-                        <span id="feelsLike" class="value">--°C</span>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-compress-arrows-alt"></i>
-                    <div>
-                        <span class="label">Pressure</span>
-                        <span id="pressure" class="value">-- mb</span>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-sun"></i>
-                    <div>
-                        <span class="label">UV Index</span>
-                        <span id="uvIndex" class="value">--</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sun-times">
-                <div class="sun-time">
-                    <i class="fas fa-sun-rise"></i>
-                    <div>
-                        <span class="label">Sunrise</span>
-                        <span id="sunrise" class="value">--:--</span>
-                    </div>
-                </div>
-                <div class="sun-time">
-                    <i class="fas fa-sun-set"></i>
-                    <div>
-                        <span class="label">Sunset</span>
-                        <span id="sunset" class="value">--:--</span>
-                    </div>
-                </div>
+                
+                <div id="api-message" class="api-message"></div>
             </div>
         </div>
 
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p id="errorText">Unable to fetch weather data. Please try again.</p>
+        <!-- Main Weather App -->
+        <div id="weather-app" class="weather-app hidden">
+            <header class="header">
+                <h1>🌤️ Weather App</h1>
+                <div class="search-container">
+                    <input type="text" id="city-input" placeholder="Enter city name..." class="search-input">
+                    <button id="search-btn" class="search-btn">🔍</button>
+                    <button id="location-btn" class="location-btn" title="Use current location">📍</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Loading weather data...</p>
+                </div>
+
+                <div id="error" class="error hidden">
+                    <p id="error-message"></p>
+                </div>
+
+                <div id="weather-display" class="weather-display hidden">
+                    <div class="current-weather">
+                        <div class="weather-header">
+                            <div class="location-info">
+                                <h2 id="location-name"></h2>
+                                <p id="current-date"></p>
+                            </div>
+                            <div class="weather-icon">
+                                <img id="weather-img" src="" alt="Weather condition">
+                            </div>
+                        </div>
+
+                        <div class="temperature-info">
+                            <div class="main-temp">
+                                <span id="temperature"></span>
+                                <span class="temp-unit">°C</span>
+                            </div>
+                            <div class="feels-like">
+                                Feels like <span id="feels-like"></span>°C
+                            </div>
+                            <div class="weather-desc" id="weather-description"></div>
+                        </div>
+
+                        <div class="weather-details">
+                            <div class="detail-item">
+                                <span class="detail-label">💧 Humidity</span>
+                                <span id="humidity" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">💨 Wind Speed</span>
+                                <span id="wind-speed" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">🌡️ Pressure</span>
+                                <span id="pressure" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">👁️ Visibility</span>
+                                <span id="visibility" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">☀️ UV Index</span>
+                                <span id="uv-index" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">🌅 Sunrise</span>
+                                <span id="sunrise" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">🌇 Sunset</span>
+                                <span id="sunset" class="detail-value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">🌫️ Air Quality</span>
+                                <span id="air-quality" class="detail-value"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="forecast-section">
+                        <h3>5-Day Forecast</h3>
+                        <div id="forecast-container" class="forecast-container"></div>
+                    </div>
+                </div>
+            </main>
         </div>
 
-        <div class="forecast-section" id="forecastSection">
-            <h3>5-Day Forecast</h3>
-            <div class="forecast-container" id="forecastContainer">
-                <!-- Forecast items will be populated by JavaScript -->
-            </div>
-        </div>
+        <!-- Settings Button -->
+        <button id="settings-btn" class="settings-btn hidden" title="Settings">⚙️</button>
     </div>
-
-    <!-- Settings Floating Action Button -->
-    <div class="settings-fab" id="settingsFab" title="API Key Settings">
-        <i class="fas fa-cog"></i>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Weather App. Powered by WeatherAPI.com</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>

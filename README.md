@@ -136,6 +136,10 @@ The application handles various error scenarios:
 4. Test thoroughly
 5. Submit a pull request
 
+## Analytics
+
+This site includes Google Analytics for traffic tracking. No personal data is collected.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
