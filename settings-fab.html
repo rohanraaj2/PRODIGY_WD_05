@@ -1,0 +1,57 @@
+<!-- Add this floating settings button -->
+<div class="settings-fab" id="settingsFab" title="API Key Settings">
+    <i class="fas fa-cog"></i>
+</div>
+
+<script>
+// Add this to the existing script.js or create a separate settings script
+document.addEventListener('DOMContentLoaded', function() {
+    const settingsFab = document.getElementById('settingsFab');
+    const apiKeySection = document.getElementById('apiKeySection');
+    
+    settingsFab.addEventListener('click', function() {
+        if (apiKeySection.classList.contains('hidden')) {
+            showApiKeySection();
+            settingsFab.innerHTML = '<i class="fas fa-times"></i>';
+        } else {
+            hideApiKeySection();
+            settingsFab.innerHTML = '<i class="fas fa-cog"></i>';
+        }
+    });
+});
+</script>
+
+<style>
+.settings-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: #0984e3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.settings-fab:hover {
+    background: #74b9ff;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.settings-fab i {
+    transition: transform 0.3s ease;
+}
+
+.settings-fab:hover i {
+    transform: rotate(90deg);
+}
+</style>
